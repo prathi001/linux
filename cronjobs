@@ -1,0 +1,53 @@
+ CRONJOB [scheduling jobs] :
+       
+               * crontab -e (create)
+               * cat /etc/crontab/ (to view)
+                 > * * * * * /path/command  nameid
+                   | | | | |__________________________ weekdays (0=sunday-7)
+                   | | | |____________________________ month    (0-12)
+                   | | |______________________________ days     (0-31)
+                   | |________________________________ hours    (0=12am-23)   
+                   |__________________________________ minutes  (0-59)
+               * crontab -r (remove)
+               * etc/cron.daily  /cron.hourly /cron.monthly 
+
+             scenario :
+               * $ touch shellscript (creating file)
+
+               * $ sudo cp shellscript /etc/cron.hourly/  (copying)
+
+               * $ sudo chmod +rw /etc/cron.hourly/shellscript (giving permissions)
+
+       
+             symbols :
+                
+               *(asterisk) - every hour,minutes,days,months 
+               ,(comma)    - specific values                [eg.1,2,15,20]
+               -(dash)     - range                          [eg.1-5]
+               /(separator)- every specific hours etc       [eg.*/2 -every twohours] 
+
+
+         ANACRON [even when sys off runs job] :
+   
+               * vi /etc/anacrontab (create & edit)
+                 
+                 > DAYS 	DELAY MIN	jobID		FULLPATH/command
+                    7              10          test_pass        /bin/bash/ /home/bob/backup.sh
+                   @monthly         5             test            ,,
+
+
+         AT [scheduling now] :
+    
+               * at 5:00 & ctrl + d (save)
+               * at 'august 20 2022'
+               * at '2:30 august 20 2022'
+               * at 'now +30 minutes' (to run 30 mins later)
+
+               * atq  (to view running jobs)
+                 > jobid	date month time    usr 
+
+               * at -c jobid (to view cmds at jobid) [eg. at -c 20]
+       
+               * atrm jobid (remove job cmds) 
+        
+         
