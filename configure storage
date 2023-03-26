@@ -1,0 +1,113 @@
+ CONFIGURE STORAGE :
+           
+         1) NORMAL PARTITION - dividing storage device is partitioning 
+                             - cannot extend if space required 
+                             - 2 ways 
+      
+            1a. * df -h  (to see filesystem parameters)
+
+                * fdisk partitionname [eg./dev/vdb] (view fdisk cmds,fdisk -formatdisk)
+
+                * commands (create partiton as required ;n-new,p-primary,1-4,t-type,code:83-linux'8e-lvm,w-save)
+
+                * mkfs.ext4 newpartitionname [eg./dev/vdb1] (create filesys in newpartition)
+
+                * mkdir /dir name 
+
+                * mount newpartition /dir (mount to dir)
+
+                * df -h (to validate)
+
+
+            1b. * fdisk -l (view all diskpartitions)
+                * cfdisk partitionname  (modify partitions on disk)
+                * select gpt (guid partition table)
+                * select options and modify 
+                * select WRITE opt and type YES (to save)
+                * quit 
+
+
+         2) LVM PARTITION - Logical Volume Management 
+            
+             Steps 
+      
+               * Create normal partition with type 8e
+
+               * pvcreate newpartitionname [eg./dev/vdc] (pv-physical volume)
+               * pvs 
+
+               * vgcreate vgname pv [eg. vol1 /dev/vdc] (vg-volume group)
+               * vgs
+
+               * lvcreate --size bytes --name lvname vgname [eg.--size 1G --name data vol1] (lv-logical volume)
+               * lvs
+
+               * lvdisplay (view lvpath)
+
+               * mkfs.xfs lvpath [eg. /dev/vol1/data] (make filesys)
+
+               * To use this filesys,mount to dir 
+                 > mkdir /dir
+                 > mount lvpath /dir [eg. /dev/vol1/data /dir]
+
+               * vi /etc/fstab (save)
+
+        
+            2a. TO EXTEND THE FILESYSTEM [ for extend use filesys]
+         
+               * pvcreate newdisk [eg./dev/vdd]
+               * pvs (to check)
+
+               * vgextend vgname pvnewdisk [eg. vol1 /dev/vdd]
+               * vgs
+
+               * lvextend -L +bytes filesys [eg. -L +500M /dev/mapper/vol-data]
+
+               * xfs_growfs filesys (increase filesys)
+
+               * vi /etc/fstab (filesys entry)
+
+                 > filesys  		    mountpt   filesys-type   default  0 0 
+                  
+               /dev/mapper/vol-data          /dir        xfs          default 0 0 
+
+
+            2b. TO REDUCE THE FILESYSTEM  [use lvpath]
+
+               * df -h (check)
+
+               * umount /dir 
+
+               * fsck.xfs -f lvpath [eg. /dev/vol/data]
+
+               * xfs_repair lvpath
+
+               * resize2fs lvpath bytes [eg./dev/vol/data 500M] (reducing filesys)
+
+               * lvreduce -L bytes lvpath (reduce lvm)
+
+               * mkfs.xfs -f lvpath 
+
+               * mount lvpath /dir 
+
+               * df -h (validate)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
