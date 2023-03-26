@@ -12,5 +12,5 @@
             * systemctl enable --now sshd.service (to start now itself)
             * systemctl mask sshd.service (not to enable or start again)
             * systemctl unmask sshd.service 
-            * systemctl list-units --type service --all (to view all services status)
+            * systemctl list-units --type service --all (to view all services status) .
           
