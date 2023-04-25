@@ -1,0 +1,18 @@
+       
+
+        SERVICES :
+     
+            * systemctl stop sshd.service (to stop)
+            * systemctl start sshd.service 
+            * systemctl restart sshd.service 
+            * systemctl reload sshd.service (instead of restart)[applicable to some]
+            * systemctl status sshd.service (show details)
+            * systemctl reload-or-restart sshd.service 
+            * systemctl disable sshd.service 
+            * systemctl is-enabled sshd.service (to check enable)
+            * systemctl enable sshd.service 
+            * systemctl enable --now sshd.service (to start now itself)
+            * systemctl mask sshd.service (not to enable or start again)
+            * systemctl unmask sshd.service 
+            * systemctl list-units --type service --all (to view all services status)
+          
